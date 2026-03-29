@@ -40,3 +40,8 @@ void split(int arr[], int left, int right)
     split(arr, mid + 1, right);
     merge(arr, left, mid, right);
 }
+
+void merge_V1(int arr[], int n)
+{
+    split(arr, 0, n - 1);
+}
