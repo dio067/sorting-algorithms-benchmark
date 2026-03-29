@@ -28,3 +28,15 @@ void merge(int arr[], int left, int mid, int right)
     while (j < size2)
         arr[k++] = R[j++];
 }
+
+void split(int arr[], int left, int right)
+{
+    if (left >= right)
+        return;
+
+    int mid = (left + right) / 2;
+
+    split(arr, left, mid);
+    split(arr, mid + 1, right);
+    merge(arr, left, mid, right);
+}
