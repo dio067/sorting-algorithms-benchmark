@@ -1,37 +1,42 @@
 #include "../header/quick.hpp"
+#include <cstdlib>  // rand()
+#include <ctime>    // time()
+
+void swap(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
 
 int partition(int T[], int first, int last)
 {
     int pivot = T[first];
     int bottom = first;
     int top = last;
-    int loop = 1;
-    int cutPoint;
 
-    while (loop)
+    while (true)
     {
+        while (T[bottom] < pivot)
+            bottom++;
 
         while (T[top] > pivot)
             top--;
 
-        while (T[bottom] < pivot)
-            bottom++;
+        if (bottom >= top)
+            return top;
 
-        if (bottom < top)
-        {
-
-            int temp = T[bottom];
-            T[bottom] = T[top];
-            T[top] = temp;
-        }
-        else
-        {
-            loop = 0;
-            cutPoint = top;
-        }
+        swap(T[bottom], T[top]);
+        bottom++;
+        top--;
     }
+}
 
-    return cutPoint;
+int randomizedPartition(int T[], int first, int last)
+{
+    int randomIndex = first + rand() % (last - first + 1);
+    swap(T[first], T[randomIndex]); // move random pivot to front
+    return partition(T, first, last);
 }
 
 void quickSortV1(int T[], int first, int last)
@@ -55,6 +60,7 @@ void insertionForQuick(int arr[], int first, int last)
     {
         int key = arr[i];
         int j = i - 1;
+
         while (j >= first && arr[j] > key)
         {
             arr[j + 1] = arr[j];
@@ -66,20 +72,31 @@ void insertionForQuick(int arr[], int first, int last)
 
 void quickSortV2(int T[], int first, int last)
 {
-    if (first < last)
+    while (first < last)
     {
         if (last - first <= 10)
         {
             insertionForQuick(T, first, last);
             return;
         }
-        int cut = partition(T, first, last);
-        quickSortV2(T, first, cut);
-        quickSortV2(T, cut + 1, last);
+
+        int cut = randomizedPartition(T, first, last);
+
+        if (cut - first < last - cut)
+        {
+            quickSortV2(T, first, cut);
+            first = cut + 1;
+        }
+        else
+        {
+            quickSortV2(T, cut + 1, last);
+            last = cut;
+        }
     }
 }
 
 void quick_V2(int arr[], int n)
 {
+    srand(time(0));
     quickSortV2(arr, 0, n - 1);
 }
