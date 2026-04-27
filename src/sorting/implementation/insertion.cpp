@@ -10,7 +10,7 @@ void insertion_V1(int arr[], int n)
 
         while (j >= 0 && arr[j] > key)
         {
-            arr[j + 1];
+            arr[j + 1] = arr[j];
             j--;
         }
 
@@ -28,7 +28,7 @@ void insertion_V2(int arr[], int n)
 
         while (j >= 0 && arr[j] > key)
         {
-            arr[j + 1];
+            arr[j + 1] = arr[j];
             j--;
             swapped = true;
         }
